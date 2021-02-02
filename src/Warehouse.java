@@ -5,13 +5,13 @@ public class Warehouse {
     public static void main(String[] args) {
 
         String[][] warehouseMatrix = {
-                {"No Place: ", "\t\t", "Name of item", "\t\t", "Date of expire", "\t\t", "Date of entry ","\t\t", "Manufacture's Name", "\t\t","Item unit", "\t\t", "Quantity"},
-                {"--------","\t\t\t","--------","\t\t\t"," DD/MM/YEAR","\t\t\t","DD/MM/YEAR","\t\t\t","--------","\t\t\t\t","--------","\t\t","--------"},
-                {"1. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t", "  ", "\t\t\t", " "},
-                {"2. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t", "  ", "\t\t\t", " "},
-                {"3. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t", "  ", "\t\t\t", " "},
-                {"4. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t", "  ", "\t\t\t", " "},
-                {"5. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t", "  ", "\t\t\t", " "},
+                {"No Place: ", "\t\t", "Name of item", "\t\t", "Date of expire", "\t\t", "Date of entry ", "\t\t", "Manufacture's Name", "\t\t\t", "Item unit", "\t\t\t", "Quantity"},
+                {"--------", "\t\t\t", "--------", "\t\t\t", " DD/MM/YEAR", "\t\t\t", "DD/MM/YEAR", "\t\t\t", "--------", "\t\t\t\t", "--------", "\t\t\t", "--------"},
+                {"1. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {"2. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {"3. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {"4. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {"5. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
         };
         printMatrix(warehouseMatrix);
 
@@ -23,16 +23,16 @@ public class Warehouse {
             switch (optional) {
                 case 1:
                     for (int i = 2; i < warehouseMatrix.length; i++) {
-                        for (int j = 2; j < warehouseMatrix[i].length; j++) {
                             warehouseMatrix[i][2] = enterItemName(warehouseMatrix);
                             warehouseMatrix[i][4] = addExpireDate(warehouseMatrix);
                             warehouseMatrix[i][6] = addDateOfEntry(warehouseMatrix);
                             warehouseMatrix[i][8] = addManufactureName(warehouseMatrix);
                             warehouseMatrix[i][10] = addItemUnit(warehouseMatrix);
+                            warehouseMatrix[i][12] = addItemQuantity(warehouseMatrix);
                             printMatrix(warehouseMatrix);
 
 //                        addItemQuantity(quantity);
-                        }
+
                     }
                     System.out.println("Warehouse is full");
                     break;
@@ -68,16 +68,18 @@ public class Warehouse {
         System.out.println("Enter item name:");
         Scanner input = new Scanner(System.in);
         String name = input.nextLine();
-        checkExistingDate(warehouseMatrix);
         return name;
     }
 
-    private static void checkExistingDate(String[][] warehouseMatrix) {
+    private static void checkExistingItemName(String[][] warehouseMatrix) {
         for (int i = 2; i < warehouseMatrix.length; i++) {
-            if(!warehouseMatrix[i][2].equalsIgnoreCase(warehouseMatrix[i][2] + 1)){
+            for (int j = 2; true; j++) {
+                if (!warehouseMatrix[i][j].equalsIgnoreCase(warehouseMatrix[i][2])) {
+                    return;
+                } else {
+                    checkExpiryDate(warehouseMatrix);
+                }
                 return;
-            }else{
-                checkExpiryDate(warehouseMatrix);
             }
         }
     }
@@ -89,27 +91,26 @@ public class Warehouse {
         return date;
     }
 
-    public static String checkExpiryDate(String[][] warehouseMatrix) {
+    public static void checkExpiryDate(String[][] warehouseMatrix) {
         for (int i = 1; i < warehouseMatrix.length; i++) {
             for (int j = 1; j < warehouseMatrix[i].length; j++) {
                 if (warehouseMatrix[i][4].equalsIgnoreCase(warehouseMatrix[i][j])) {
-                    sumItemQuantity(int quantityItem);
-                } else {
-                warehouseMatrix[i][1] = date;
+                    int sum = 0;
+                    int quantity = Integer.parseInt(warehouseMatrix[i][j]);
+                    sum += quantity;
+                }else{
+                    return;
+                }
             }
         }
-        return date;
     }
 
     public static String addDateOfEntry(String[][] warehouseMatrix) {
+        checkExistingItemName(warehouseMatrix);
+        checkExpiryDate(warehouseMatrix);
         System.out.println("Enter date of entry: ");
         Scanner input = new Scanner(System.in);
         String date = input.nextLine();
-//        for (int i = 1; i < warehouseMatrix.length; i++) {
-//            for (int j = 1; j < warehouseMatrix[1].length; j++) {
-//                warehouseMatrix[i][1] = date;
-//            }
-//        }
         return date;
 
     }
@@ -118,11 +119,7 @@ public class Warehouse {
         System.out.println("Enter Manufacture Name: ");
         Scanner input = new Scanner(System.in);
         String nameOfManufacture = input.nextLine();
-//        for (int i = 1; i < warehouseMatrix.length; i++) {
-//            for (int j = 1; j < warehouseMatrix[1].length; j++) {
-//                warehouseMatrix[i][1] = nameOfManufacture;
-//            }
-//        }
+
         return nameOfManufacture;
 
     }
@@ -134,18 +131,12 @@ public class Warehouse {
         return itemUnit;
     }
 
-    public static int addItemQuantity(int quantity) {
+    public static String addItemQuantity(String[][] warehouseMatrix) {
         System.out.println("Enter item quantity: ");
         Scanner input = new Scanner(System.in);
-        int quantityItem = input.nextInt();
+        String quantityItem = input.nextLine();
 
         return quantityItem;
-    }
-
-    public static int sumItemQuantity(int quantityItem) {
-        int sum = 0;
-        sum += quantityItem;
-        return sum;
     }
 //
 //    public static void referenceItemByDate(String[][] warehouseMatrix) {
@@ -158,5 +149,6 @@ public class Warehouse {
 //
 //
 //    }
+
 }
 
