@@ -2,6 +2,14 @@ import java.util.Scanner;
 
 public class Warehouse {
 
+    public static final int ITEM_NAME = 2;
+    public static final int EXPIRE_DATE = 4;
+    public static final int DATE_OF_ENTRY = 6;
+    public static final int MANUFACTURE_NAME = 8;
+    public static final int ITEM_UNIT = 10;
+    public static final int ITEM_QUANTITY = 12;
+
+
     public static void main(String[] args) {
 
         String[][] warehouseMatrix = {
@@ -15,24 +23,25 @@ public class Warehouse {
         };
         printMatrix(warehouseMatrix);
 
+        String[] warehouseArray = new String[13];
+
         int optional;
         Scanner input = new Scanner(System.in);
+        int countAddedItem = 0;
         do {
             menu();
             optional = input.nextInt();
             switch (optional) {
                 case 1:
                     for (int i = 2; i < warehouseMatrix.length; i++) {
-                            warehouseMatrix[i][2] = enterItemName(warehouseMatrix);
-                            warehouseMatrix[i][4] = addExpireDate(warehouseMatrix);
-                            warehouseMatrix[i][6] = addDateOfEntry(warehouseMatrix);
-                            warehouseMatrix[i][8] = addManufactureName(warehouseMatrix);
-                            warehouseMatrix[i][10] = addItemUnit(warehouseMatrix);
-                            warehouseMatrix[i][12] = addItemQuantity(warehouseMatrix);
-                            printMatrix(warehouseMatrix);
-
-//                        addItemQuantity(quantity);
-
+                        warehouseMatrix[i][ITEM_NAME] = addItemName(warehouseMatrix);
+                        warehouseMatrix[i][EXPIRE_DATE] = addExpireDate(warehouseMatrix);
+                        warehouseMatrix[i][DATE_OF_ENTRY] = addDateOfEntry(warehouseMatrix);
+                        warehouseMatrix[i][MANUFACTURE_NAME] = addManufactureName(warehouseMatrix);
+                        warehouseMatrix[i][ITEM_UNIT] = addItemUnit(warehouseMatrix);
+                        warehouseMatrix[i][ITEM_QUANTITY] = addItemQuantity(warehouseMatrix);
+                        printMatrix(warehouseMatrix);
+                        countAddedItem++;
                     }
                     System.out.println("Warehouse is full");
                     break;
@@ -64,24 +73,20 @@ public class Warehouse {
         }
     }
 
-    public static String enterItemName(String[][] warehouseMatrix) {
+    public static String addItemName(String[][] warehouseMatrix) {
         System.out.println("Enter item name:");
         Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         return name;
     }
 
-    private static void checkExistingItemName(String[][] warehouseMatrix) {
-        for (int i = 2; i < warehouseMatrix.length; i++) {
-            for (int j = 2; true; j++) {
-                if (!warehouseMatrix[i][j].equalsIgnoreCase(warehouseMatrix[i][2])) {
-                    return;
-                } else {
-                    checkExpiryDate(warehouseMatrix);
-                }
-                return;
+    private static boolean checkExistingItemName(String[][] warehouseMatrix) {
+        for (int i = 2; i < warehouseMatrix.length ; i++) {
+            if (warehouseMatrix[i][2].equalsIgnoreCase(warehouseMatrix[i - 1][2])) {
+                return true;
             }
         }
+        return false;
     }
 
     public static String addExpireDate(String[][] warehouseMatrix) {
@@ -91,23 +96,17 @@ public class Warehouse {
         return date;
     }
 
-    public static void checkExpiryDate(String[][] warehouseMatrix) {
-        for (int i = 1; i < warehouseMatrix.length; i++) {
-            for (int j = 1; j < warehouseMatrix[i].length; j++) {
-                if (warehouseMatrix[i][4].equalsIgnoreCase(warehouseMatrix[i][j])) {
-                    int sum = 0;
-                    int quantity = Integer.parseInt(warehouseMatrix[i][j]);
-                    sum += quantity;
-                }else{
-                    return;
-                }
+    public static boolean checkExpiryDate(String[][] warehouseMatrix) {
+        for (int i = 2; i < warehouseMatrix.length; i++) {
+            if (warehouseMatrix[i][4].equals(warehouseMatrix[i - 1][4])) {
+                return true;
             }
         }
+        return false;
     }
 
     public static String addDateOfEntry(String[][] warehouseMatrix) {
-        checkExistingItemName(warehouseMatrix);
-        checkExpiryDate(warehouseMatrix);
+
         System.out.println("Enter date of entry: ");
         Scanner input = new Scanner(System.in);
         String date = input.nextLine();
@@ -134,9 +133,17 @@ public class Warehouse {
     public static String addItemQuantity(String[][] warehouseMatrix) {
         System.out.println("Enter item quantity: ");
         Scanner input = new Scanner(System.in);
-        String quantityItem = input.nextLine();
+        String scan = input.nextLine();
+        checkExistingItemName(warehouseMatrix);
+        checkExpiryDate(warehouseMatrix);
 
-        return quantityItem;
+        if (checkExistingItemName(warehouseMatrix) && checkExpiryDate(warehouseMatrix)) {
+            int sum = 0;
+            int quantityItem = Integer.parseInt(scan);
+            sum += quantityItem;
+            scan = Integer.toString(sum);
+        }
+        return scan;
     }
 //
 //    public static void referenceItemByDate(String[][] warehouseMatrix) {
