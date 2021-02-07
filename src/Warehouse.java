@@ -35,14 +35,14 @@ public class Warehouse {
         count = 1;
         String[][] warehouseMatrix = {
                 {"No Place: ", "\t\t", "Name of item", "\t\t", "Date of expire", "\t\t", "Date of entry ", "\t\t", "Manufacture's Name", "\t\t\t", "Item unit", "\t\t\t", "Quantity"},
-                {"1. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
-                {"2. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
-                {"3. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
-                {"4. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
-                {"5. ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
+                {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "},
         };
 
-        for (int i = 2; i < warehouseMatrix.length; i++) {
+        for (int i = 0; i < warehouseMatrix.length; i++) {
 
             String[] warehouseArray = {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " "};
             warehouseArray[0] = Integer.toString(count);
@@ -56,46 +56,24 @@ public class Warehouse {
             printArray(warehouseArray);
             System.out.println();
 
-            if (count < 2){
+            if (!checkExistingItemName(warehouseMatrix, warehouseArray, count) || !checkExpireDate(warehouseMatrix, warehouseArray, count)) {
+                warehouseMatrix[count][0] = warehouseArray[0];
                 warehouseMatrix[count][2] = warehouseArray[2];
-
                 warehouseMatrix[count][4] = warehouseArray[4];
-
                 warehouseMatrix[count][6] = warehouseArray[6];
-
                 warehouseMatrix[count][8] = warehouseArray[8];
-
                 warehouseMatrix[count][10] = warehouseArray[10];
-
                 warehouseMatrix[count][12] = warehouseArray[12];
-            }
-
-            if (count >= 2) {
-                if (checkExistingItem(warehouseMatrix, warehouseArray, count) && checkExpireDate(warehouseMatrix, warehouseArray, count)) {
-                    int quantityMatrix = Integer.parseInt(warehouseMatrix[count - 1][12]);
-                    int quantityArray = Integer.parseInt(warehouseArray[12]);
-                    String sumQuantity = Integer.toString(quantityArray + quantityMatrix);
-                    warehouseMatrix[count - 1][12] = sumQuantity;
-                    count--;
-
-                }else{
-                    warehouseMatrix[count][2] = warehouseArray[2];
-
-                    warehouseMatrix[count][4] = warehouseArray[4];
-
-                    warehouseMatrix[count][6] = warehouseArray[6];
-
-                    warehouseMatrix[count][8] = warehouseArray[8];
-
-                    warehouseMatrix[count][10] = warehouseArray[10];
-                    warehouseMatrix[count][12] = warehouseArray[12];
-                }
+            } else {
+                checkExistingItem(warehouseMatrix, warehouseArray, count);
             }
 
             printMatrix(warehouseMatrix, warehouseArray);
             count++;
         }
+        System.out.println("Warehouse is full");
     }
+
 
     public static void printMatrix(String[][] warehouseMatrix, String[] warehouseArray) {
         for (int i = 0; i < warehouseMatrix.length; i++) {
@@ -106,18 +84,31 @@ public class Warehouse {
         }
     }
 
-    private static boolean checkExistingItem(String[][] warehouseMatrix, String[] warehouseArray, int count) {
-        for (int i = count; i >= 1; i--) {
-            if (warehouseArray[count].equalsIgnoreCase(warehouseMatrix[i - 1][2])) {
+    private static String checkExistingItem(String[][] warehouseMatrix, String[] warehouseArray, int count) {
+        for (int i = 1; i < count; i++) {
+            if ((warehouseArray[2].equalsIgnoreCase(warehouseMatrix[i][2])) && (warehouseArray[4].equalsIgnoreCase(warehouseMatrix[i][4]))) {
+                int quantityMatrix = Integer.parseInt(warehouseMatrix[i][12]);
+                int quantityArray = Integer.parseInt(warehouseArray[12]);
+                String sumQuantity = Integer.toString(quantityArray + quantityMatrix);
+                warehouseMatrix[i][12] = sumQuantity;
+                return sumQuantity;
+            }
+        }
+        return warehouseMatrix[count][12] = warehouseArray[12];
+    }
+
+    public static boolean checkExistingItemName(String[][] warehouseMatrix, String[] warehouseArray, int count) {
+        for (int i = 1; i < count; i++) {
+            if (warehouseArray[2].equalsIgnoreCase(warehouseMatrix[i][2])) {
                 return true;
             }
         }
         return false;
     }
 
-    private static boolean checkExpireDate(String[][] warehouseMatrix, String[] warehouseArray, int count) {
-        for (int i = count; i >= 1; i--) {
-            if (warehouseArray[4].equalsIgnoreCase(warehouseMatrix[i - 1][4])) {
+    public static boolean checkExpireDate(String[][] warehouseMatrix, String[] warehouseArray, int count) {
+        for (int i = 1; i < count; i++) {
+            if (warehouseArray[4].equalsIgnoreCase(warehouseMatrix[i][4])) {
                 return true;
             }
         }
