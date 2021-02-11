@@ -76,7 +76,7 @@ public class Warehouse {
 
     public static void menu() {
         System.out.println();
-        System.out.println("1 - Add new Item. Max quantity are 100.");
+        System.out.println("1 - Add new Item: ");
         System.out.println("2 - Reference for availability in a given period");
         System.out.println("0 - Exit");
     }
@@ -95,6 +95,9 @@ public class Warehouse {
             if ((warehouseArray[2].equalsIgnoreCase(warehouseMatrix[i][2])) && (warehouseArray[4].equalsIgnoreCase(warehouseMatrix[i][4]))) {
                 int quantityMatrix = Integer.parseInt(warehouseMatrix[i][12]);
                 int quantityArray = Integer.parseInt(warehouseArray[12]);
+//                if ((quantityArray + quantityMatrix) > 100) {
+//                    throw new IndexOutOfBoundsException("Not enough space.");
+//                }
                 String sumQuantity = Integer.toString(quantityArray + quantityMatrix);
                 warehouseMatrix[i][12] = sumQuantity;
                 return sumQuantity;
@@ -126,90 +129,78 @@ public class Warehouse {
 
     }
 
+    public static String addDetails() {
+        Scanner input = new Scanner(System.in);
+        return input.nextLine();
+    }
+
     public static String addItemName() {
         System.out.println("Enter item name:");
-        Scanner input = new Scanner(System.in);
-        String name = input.nextLine();
+        String name = addDetails();
         return name;
     }
 
     public static String addExpireDate() {
         System.out.println("Enter expire date: ");
-        Scanner input = new Scanner(System.in);
-        String date = input.nextLine();
+        String date = addDetails();
         return date;
     }
 
     public static String addDateOfEntry() {
-
         System.out.println("Enter date of entry: ");
-        Scanner input = new Scanner(System.in);
-        String date = input.nextLine();
+        String date = addDetails();
         return date;
-
     }
 
     public static String addManufactureName() {
         System.out.println("Enter Manufacture Name: ");
-        Scanner input = new Scanner(System.in);
-        String nameOfManufacture = input.nextLine();
-
+        String nameOfManufacture = addDetails();
         return nameOfManufacture;
-
     }
 
     public static String addItemUnit() {
         System.out.println("Enter item unit: ");
-        Scanner input = new Scanner(System.in);
-        String itemUnit = input.nextLine();
+        String itemUnit = addDetails();
         return itemUnit;
     }
 
     public static String addItemQuantity() {
         System.out.println("Enter item quantity: ");
-        Scanner input = new Scanner(System.in);
-        String itemQuantity = input.nextLine();
+        String itemQuantity = addDetails();
         return itemQuantity;
     }
 
     private static String addComments() {
         System.out.println("Enter comments: ");
-        Scanner input = new Scanner(System.in);
-        String comments = input.nextLine();
+        String comments = addDetails();
         return comments;
     }
 
     private static void printReferenceByDate(String[][] warehouseMatrix, String[] warehouseArray) {
-        for (int i = enterStartDate(warehouseMatrix); i <= enterEndDate(warehouseMatrix); i++) {
-            for (int j = 0; j < warehouseArray.length; j++) {
-                System.out.print(warehouseMatrix[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
-    public static int enterStartDate(String[][] warehouseMatrix) {
-        System.out.println("Enter start date for reference: ");
-        Scanner input = new Scanner(System.in);
-        String startDate = input.nextLine();
         for (int i = 1; i < warehouseMatrix.length; i++) {
-            if (warehouseMatrix[i][6].equalsIgnoreCase(startDate)) {
-                return i;
+            if (enterStartDate().equalsIgnoreCase(warehouseMatrix[i][6])) {
+                String endDate = enterEndDate();
+                while (!endDate.equalsIgnoreCase(warehouseMatrix[i][6])) {
+                    for (int j = 0; j < warehouseArray.length; j++) {
+                        System.out.print(warehouseMatrix[i][j]);
+                    }
+                    System.out.println();
+                    i++;
+                }
             }
         }
-        return 0;
     }
 
-    public static int enterEndDate(String[][] warehouseMatrix) {
+    public static String enterStartDate() {
+        System.out.println("Enter start date for reference: ");
+        String startDate = addDetails();
+        return startDate;
+    }
+
+    public static String enterEndDate() {
         System.out.println("Enter end date for reference: ");
-        Scanner input = new Scanner(System.in);
-        String endDate = input.nextLine();
-        for (int i = enterStartDate(warehouseMatrix); i < warehouseMatrix.length; i++) {
-            if (warehouseMatrix[i][6].equalsIgnoreCase(endDate)) {
-                return i;
-            }
-        }
-        return 0;
+        String endDate = addDetails();
+        return endDate;
     }
 
 }
