@@ -177,7 +177,7 @@ public class Warehouse {
     }
 
     private static void printReferenceByDate(String[][] warehouseMatrix, String[] warehouseArray) {
-        for (int i = 1; i < warehouseMatrix.length; i++) {
+        for (int i = 1; i < 2; i++) {
             if (enterStartDate().equalsIgnoreCase(warehouseMatrix[i][6])) {
                 String endDate = enterEndDate();
                 while (!endDate.equalsIgnoreCase(warehouseMatrix[i][6])) {
