@@ -25,6 +25,7 @@ public class Warehouse {
                 {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " ", "\t\t\t\t", " "},
                 {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " ", "\t\t\t\t", " "},
                 {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " ", "\t\t\t\t", " "},
+                {" ", "\t\t\t\t", " ", "\t\t\t\t", " ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", "  ", "\t\t\t\t", " ", "\t\t\t\t", " "},
         };
 
         do {
@@ -71,12 +72,12 @@ public class Warehouse {
                 default:
                     break;
             }
-        } while ((optional != 0) || (count < warehouseMatrix.length));
+        } while (optional != 0) ;
     }
 
     public static void menu() {
         System.out.println();
-        System.out.println("1 - Add new Item: ");
+        System.out.println("1 - Add new Item. Max quantity is 99: ");
         System.out.println("2 - Reference for availability in a given period");
         System.out.println("0 - Exit");
     }
@@ -95,10 +96,12 @@ public class Warehouse {
             if ((warehouseArray[2].equalsIgnoreCase(warehouseMatrix[i][2])) && (warehouseArray[4].equalsIgnoreCase(warehouseMatrix[i][4]))) {
                 int quantityMatrix = Integer.parseInt(warehouseMatrix[i][12]);
                 int quantityArray = Integer.parseInt(warehouseArray[12]);
-//                if ((quantityArray + quantityMatrix) > 100) {
-//                    throw new IndexOutOfBoundsException("Not enough space.");
-//                }
                 String sumQuantity = Integer.toString(quantityArray + quantityMatrix);
+                if ((quantityArray + quantityMatrix) > 100) {
+                    System.out.println("!!!!!  NOT ENOUGH SPACE  !!!!: ");
+                    System.out.println();
+                    return warehouseMatrix[i][12] = "99";
+                }
                 warehouseMatrix[i][12] = sumQuantity;
                 return sumQuantity;
             }
@@ -177,9 +180,10 @@ public class Warehouse {
     }
 
     private static void printReferenceByDate(String[][] warehouseMatrix, String[] warehouseArray) {
-        for (int i = 1; i < 2; i++) {
-            if (enterStartDate().equalsIgnoreCase(warehouseMatrix[i][6])) {
-                String endDate = enterEndDate();
+        String startDate = enterStartDate();
+        String endDate = enterEndDate();
+        for (int i = 1; i < warehouseMatrix.length; i++) {
+            if (startDate.equalsIgnoreCase(warehouseMatrix[i][6])) {
                 while (!endDate.equalsIgnoreCase(warehouseMatrix[i][6])) {
                     for (int j = 0; j < warehouseArray.length; j++) {
                         System.out.print(warehouseMatrix[i][j]);
