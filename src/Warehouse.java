@@ -16,7 +16,6 @@ public class Warehouse {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int optional;
-        int count = 1;
         String[] warehouseArray = {" ", "\t\t", " ", "\t\t", " ", "\t\t", "  ", "\t\t", "  ", "\t\t", "  ", "\t\t", " ", "\t\t", " "};
         String[][] warehouseMatrix = {
                 {"No Place: ", "\t\t", "Name of item", "\t\t", "Date of expire", "\t\t", "Date of entry ", "\t\t", "Manufacture's Name", "\t\t\t", "Item unit", "\t\t\t", "Quantity", "\t\t\t", "Comments"},
@@ -33,38 +32,7 @@ public class Warehouse {
             optional = input.nextInt();
             switch (optional) {
                 case 1:
-                    warehouseArray[COUNT] = Integer.toString(count);
-                    warehouseArray[ITEM_NAME] = addItemName();
-                    warehouseArray[EXPIRE_DATE] = addExpireDate();
-                    warehouseArray[DATE_OF_ENTRY] = addDateOfEntry();
-                    warehouseArray[MANUFACTURE_NAME] = addManufactureName();
-                    warehouseArray[ITEM_UNIT] = addItemUnit();
-                    warehouseArray[ITEM_QUANTITY] = addItemQuantity();
-                    warehouseArray[COMMENTS] = addComments();
-
-                    printArray(warehouseArray);
-                    System.out.println();
-
-                    if (!checkExistingItemName(warehouseMatrix, warehouseArray, count) || !checkExpireDate(warehouseMatrix, warehouseArray, count)) {
-                        warehouseMatrix[count][Warehouse.COUNT] = warehouseArray[Warehouse.COUNT];
-                        warehouseMatrix[count][ITEM_NAME] = warehouseArray[ITEM_NAME];
-                        warehouseMatrix[count][EXPIRE_DATE] = warehouseArray[EXPIRE_DATE];
-                        warehouseMatrix[count][DATE_OF_ENTRY] = warehouseArray[DATE_OF_ENTRY];
-                        warehouseMatrix[count][MANUFACTURE_NAME] = warehouseArray[MANUFACTURE_NAME];
-                        warehouseMatrix[count][ITEM_UNIT] = warehouseArray[ITEM_UNIT];
-                        warehouseMatrix[count][ITEM_QUANTITY] = warehouseArray[ITEM_QUANTITY];
-                        warehouseMatrix[count][COMMENTS] = warehouseArray[COMMENTS];
-                    } else {
-                        checkExistingItem(warehouseMatrix, warehouseArray, count);
-                        count--;
-                    }
-
-                    printMatrix(warehouseMatrix, warehouseArray);
-                    count++;
-
-                    if (count == warehouseMatrix.length) {
-                        System.out.println("Warehouse is full");
-                    }
+                    fillMatrix(warehouseMatrix, warehouseArray);
                     break;
                 case 2:
                     printReferenceByDate(warehouseMatrix, warehouseArray);
@@ -73,6 +41,42 @@ public class Warehouse {
                     break;
             }
         } while (optional != 0) ;
+    }
+
+    public static void fillMatrix(String[][] warehouseMatrix, String[] warehouseArray){
+        int count = 1;
+        warehouseArray[COUNT] = Integer.toString(count);
+        warehouseArray[ITEM_NAME] = addItemName();
+        warehouseArray[EXPIRE_DATE] = addExpireDate();
+        warehouseArray[DATE_OF_ENTRY] = addDateOfEntry();
+        warehouseArray[MANUFACTURE_NAME] = addManufactureName();
+        warehouseArray[ITEM_UNIT] = addItemUnit();
+        warehouseArray[ITEM_QUANTITY] = addItemQuantity();
+        warehouseArray[COMMENTS] = addComments();
+
+        printArray(warehouseArray);
+        System.out.println();
+
+        if (!checkExistingItemName(warehouseMatrix, warehouseArray, count) || !checkExpireDate(warehouseMatrix, warehouseArray, count)) {
+            warehouseMatrix[count][Warehouse.COUNT] = warehouseArray[Warehouse.COUNT];
+            warehouseMatrix[count][ITEM_NAME] = warehouseArray[ITEM_NAME];
+            warehouseMatrix[count][EXPIRE_DATE] = warehouseArray[EXPIRE_DATE];
+            warehouseMatrix[count][DATE_OF_ENTRY] = warehouseArray[DATE_OF_ENTRY];
+            warehouseMatrix[count][MANUFACTURE_NAME] = warehouseArray[MANUFACTURE_NAME];
+            warehouseMatrix[count][ITEM_UNIT] = warehouseArray[ITEM_UNIT];
+            warehouseMatrix[count][ITEM_QUANTITY] = warehouseArray[ITEM_QUANTITY];
+            warehouseMatrix[count][COMMENTS] = warehouseArray[COMMENTS];
+        } else {
+            checkExistingItem(warehouseMatrix, warehouseArray, count);
+            count--;
+        }
+
+        printMatrix(warehouseMatrix, warehouseArray);
+        count++;
+
+        if (count == warehouseMatrix.length) {
+            System.out.println("Warehouse is full");
+        }
     }
 
     public static void menu() {
@@ -97,6 +101,7 @@ public class Warehouse {
                 int quantityMatrix = Integer.parseInt(warehouseMatrix[i][12]);
                 int quantityArray = Integer.parseInt(warehouseArray[12]);
                 String sumQuantity = Integer.toString(quantityArray + quantityMatrix);
+
                 if ((quantityArray + quantityMatrix) > 100) {
                     System.out.println("!!!!!  NOT ENOUGH SPACE  !!!!: ");
                     System.out.println();
@@ -139,20 +144,20 @@ public class Warehouse {
 
     public static String addItemName() {
         System.out.println("Enter item name:");
-        String name = addDetails();
-        return name;
+        String itemName = addDetails();
+        return itemName;
     }
 
     public static String addExpireDate() {
         System.out.println("Enter expire date: ");
-        String date = addDetails();
-        return date;
+        String expireDate = addDetails();
+        return expireDate;
     }
 
     public static String addDateOfEntry() {
         System.out.println("Enter date of entry: ");
-        String date = addDetails();
-        return date;
+        String entryDate = addDetails();
+        return entryDate;
     }
 
     public static String addManufactureName() {
